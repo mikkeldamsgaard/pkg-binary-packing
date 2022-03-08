@@ -35,7 +35,7 @@ class PackingBuffer:
     return buffer_.bytes
 
   /**
-  Writes an 8-bit integer to the packing buffer.
+  Appends an 8-bit integer to the packing buffer.
   */
   write_int8 val/int:
     ensure_ 1
@@ -43,7 +43,7 @@ class PackingBuffer:
     current_position_++
 
   /**
-  Writes an unsigned 8-bit integer to the packing buffer.
+  Appends an unsigned 8-bit integer to the packing buffer.
   */
   write_uint8 val/int:
     ensure_ 1
@@ -51,7 +51,7 @@ class PackingBuffer:
     current_position_++
   
   /**
-  Writes a 16-bit integer to the packing buffer.
+  Appends a 16-bit integer to the packing buffer.
   */
   write_int16 val/int:
     ensure_ 2
@@ -59,7 +59,7 @@ class PackingBuffer:
     current_position_ += 2
 
   /**
-  Writes an unsigned 16-bit integer to the packing buffer.
+  Appends an unsigned 16-bit integer to the packing buffer.
   */
   write_uint16 val/int:
     ensure_ 2
@@ -67,7 +67,7 @@ class PackingBuffer:
     current_position_ += 2
 
   /**
-  Writes a 32-bit integer to the packing buffer.
+  Appends a 32-bit integer to the packing buffer.
   */
   write_int32 val/int:
     ensure_ 4
@@ -75,7 +75,7 @@ class PackingBuffer:
     current_position_ += 4
 
   /**
-  Writes an unsigned 32-bit integer to the packing buffer.
+  Appends an unsigned 32-bit integer to the packing buffer.
   */
   write_uint32 val/int:
     ensure_ 4
@@ -83,7 +83,7 @@ class PackingBuffer:
     current_position_ += 4
 
   /**
-  Writes a 64-bit integer to the packing buffer.
+  Appends a 64-bit integer to the packing buffer.
   */
   write_int64 val/int:
     ensure_ 8
@@ -91,10 +91,73 @@ class PackingBuffer:
     current_position_ += 8
 
   /**
-  Writes a byte array into this packing buffer.
+  Appends a byte array into this packing buffer.
   */
   write_byte_array data/ByteArray from/int=0 to/int=data.size:
     buffer_.write data from to
+
+  /**
+  Sets an 8-bit integer to the packing buffer at the specified $pos.
+  */
+  set_int8 pos/int val/int:
+    ensure_at_ pos + 1
+    byte_order_.put_int8 buffer_.buffer_ pos val
+
+  /**
+  Sets an unsigned 8-bit integer to the packing buffer at the specified $pos.
+  */
+  set_uint8 pos/int val/int:
+    ensure_at_ pos + 1
+    byte_order_.put_uint8 buffer_.buffer_ pos val
+  
+  /**
+  Sets a 16-bit integer to the packing buffer at the specified $pos.
+  */
+  set_int16 pos/int val/int:
+    ensure_at_ pos + 2
+    byte_order_.put_int16 buffer_.buffer_ pos val
+
+  /**
+  Sets an unsigned 16-bit integer to the packing buffer at the specified $pos.
+  */
+  set_uint16 pos/int val/int:
+    ensure_at_ pos + 2
+    byte_order_.put_uint16 buffer_.buffer_ pos val
+
+  /**
+  Sets a 32-bit integer to the packing buffer at the specified $pos.
+  */
+  set_int32 pos/int val/int:
+    ensure_at_ pos + 4
+    byte_order_.put_int32 buffer_.buffer_ pos val
+
+  /**
+  Sets an unsigned 32-bit integer to the packing buffer at the specified $pos.
+  */
+  set_uint32 pos/int val/int:
+    ensure_at_ pos + 4
+    byte_order_.put_uint32 buffer_.buffer_ pos val
+
+  /**
+  Sets a 64-bit integer to the packing buffer at the specified $pos.
+  */
+  set_int64 pos/int val/int:
+    ensure_at_ pos + 8
+    byte_order_.put_int64 buffer_.buffer_ pos val
+
+  /**
+  Sets a byte array into this packing buffer at the specified $pos.
+  */
+  set_byte_array pos/int data/ByteArray from/int=0 to/int=data.size:
+    count := from - to
+    ensure_at_ pos + count
+    buffer_.buffer_.replace pos data from to
+
+
+  /**
+  The position the next append will write to.    
+  */
+  current_position -> int: return current_position_
 
   /**
   resets the packing buffer, start writing from the beginning.
@@ -106,8 +169,12 @@ class PackingBuffer:
 
   current_position_= val: buffer_.offset_ = val
 
+  ensure_at_ pos/int:
+    if pos > current_position_: ensure_ pos - current_position_
+
   ensure_ count:
     buffer_.ensure_ count
+
 
 /**
 Handles unpacking data from a byte array with automatic position management.
