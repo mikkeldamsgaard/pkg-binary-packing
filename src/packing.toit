@@ -1,5 +1,6 @@
 import binary
 import bytes show Buffer
+import encoding.hex
 
 /**
 Handles packing data to a dynamic buffer with automatic position management.
@@ -286,5 +287,8 @@ class UnpackingBuffer:
 
   verify_read_ byte_count:
     if current_position_ + byte_count > buffer_.size: throw "READ_BEYOND_SIZE"
+
+  to_string:
+    return "$(hex.encode buffer_)"
 
   
