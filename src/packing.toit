@@ -285,6 +285,11 @@ class UnpackingBuffer:
     verify_read_ count
     current_position_ += count
 
+  /**
+  Returns the underlying buffer.
+  */
+  buffer -> ByteArray: return buffer_
+
   verify_read_ byte_count:
     if current_position_ + byte_count > buffer_.size: throw "READ_BEYOND_SIZE"
 
