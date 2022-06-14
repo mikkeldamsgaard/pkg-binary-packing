@@ -210,7 +210,7 @@ class UnpackingBuffer:
   Reds out an unsigned 8-bit integer.
   */
   read_uint8 -> int:
-    verify_read_ 1
+    //verify_read_ 1
     val := byte_order_.uint8 buffer_ current_position
     current_position_++
     return val
@@ -219,7 +219,7 @@ class UnpackingBuffer:
   Reds out a 16-bit integer.
   */
   read_int16 -> int:
-    verify_read_ 2
+    //verify_read_ 2
     val := byte_order_.int16 buffer_ current_position
     current_position_ += 2
     return val
