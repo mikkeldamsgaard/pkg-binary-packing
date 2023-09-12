@@ -183,7 +183,7 @@ Handles unpacking data from a byte array with automatic position management.
 class UnpackingBuffer:
   current_position_/int := 0
   byte_order_/binary.ByteOrder
-  buffer_/ByteArray
+  buffer_/ByteArray? := ?
 
   constructor.private_ .byte_order_ .buffer_:
 
@@ -290,8 +290,17 @@ class UnpackingBuffer:
   */
   buffer -> ByteArray: return buffer_
 
+  /**
+  Sets a new buffer and resets the reader
+  */
+  buffer= buf/ByteArray:
+    current_position_ = 0
+    buffer_ = buf
+
   verify_read_ byte_count:
     if current_position_ + byte_count > buffer_.size: throw "READ_BEYOND_SIZE"
+
+
 
   to_string:
     return "$(hex.encode buffer_)"
