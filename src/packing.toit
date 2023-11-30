@@ -97,7 +97,7 @@ class PackingBuffer:
   write-float32 val/float:
     ensure_ 4
     byte-order_.put-float32 buffer_.bytes current-position val
-    current-position += 4
+    current-position_ += 4
 
   /**
   Appends a 64-bit float to the packing buffer.
@@ -105,7 +105,7 @@ class PackingBuffer:
   write-float64 val/float:
     ensure_ 8
     byte-order_.put-float64 buffer_.bytes current-position val
-    current-position += 8
+    current-position_ += 8
 
   /**
   Appends a byte array into this packing buffer.
@@ -282,16 +282,16 @@ class UnpackingBuffer:
   read-float32 -> float:
     verify-read_ 4
     val := byte-order_.float32 buffer_ current-position
-    current-position += 4
+    current-position_ += 4
     return val
 
   /**
   Reds out a 64-bit float.
   */
-  read-float32 -> float:
+  read-float64 -> float:
     verify-read_ 8
     val := byte-order_.float32 buffer_ current-position
-    current-position += 8
+    current-position_ += 8
     return val
 
   /**
