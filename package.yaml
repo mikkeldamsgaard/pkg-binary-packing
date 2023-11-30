@@ -1,1 +1,3 @@
 name: packing
+environment:
+  sdk: ^2.0.0-alpha.123
