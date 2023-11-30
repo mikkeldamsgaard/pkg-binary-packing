@@ -1,3 +1,4 @@
 name: packing
+description: Allowing to construct and read binary streams
 environment:
   sdk: ^2.0.0-alpha.123
