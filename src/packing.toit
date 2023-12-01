@@ -96,7 +96,7 @@ class PackingBuffer:
   */
   write-float32 val/float:
     ensure_ 4
-    byte-order_.put-float32 buffer_.bytes current-position val
+    byte-order_.put-float32 buffer_.buffer_ current-position val
     current-position_ += 4
 
   /**
@@ -104,7 +104,7 @@ class PackingBuffer:
   */
   write-float64 val/float:
     ensure_ 8
-    byte-order_.put-float64 buffer_.bytes current-position val
+    byte-order_.put-float64 buffer_.buffer_ current-position val
     current-position_ += 8
 
   /**
